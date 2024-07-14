@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Yummy</title>
+</head>
+
+<body class=" bg-black">
+    <!-- sidebar -->
+    <div class="sidebar position-fixed top-0 bottom-0  d-flex">
+        <div class="side-body p-4 bg-black d-flex flex-column justify-content-between ">
+            <ul class="  text-white  overflow-hidden" id="links">
+                <li class=" cursor-pointer my-3  " id="Search">Search
+                </li>
+                <li class=" cursor-pointer my-3  " id="Categories">
+                    Categories</li>
+                <li class=" cursor-pointer my-3  " id="Area">Area</li>
+                <li class=" cursor-pointer my-3  " id="Ingredients">
+                    Ingredients</li>
+                <li class=" cursor-pointer my-3  " id="Contact">Contact
+                    Us</li>
+            </ul>
+            <div class="footer">
+                <ul class=" text-white d-flex">
+                    <li class=" pe-2"><i class="fa-brands fa-facebook cursor-pointer"></i></li>
+                    <li class=" pe-2"><i class="fa-brands fa-twitter cursor-pointer"></i></li>
+                    <li class=" pe-2"><i class="fa-solid fa-globe cursor-pointer"></i></li>
+                </ul>
+                <p class=" text-white">Copyright Â© 2019 All Rights
+                    Reserved.</p>
+            </div>
+        </div>
+        <div class="side-header  py-4  px-2 bg-white d-flex  flex-column  justify-content-between">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="" class=" img-fluid">
+            </div>
+            <div class="closing-opening text-center ">
+                <i class="fa-solid fa-sliders fa-2x cursor-pointer "></i>
+            </div>
+            <div class="footer d-flex flex-column align-items-center">
+                <i class="fa-solid fa-globe d-block mb-2  cursor-pointer"></i>
+                <i class="fa-solid fa-share-nodes cursor-pointer"></i>
+            </div>
+        </div>
+    </div>
+    <!-- main -->
+    <!-- search -->
+    <div class="container-fluid my-5 px-5  d-none w-75" id="searchPage">
+        <div class="row gy-4 pb-4">
+            <div class="name-input col-md-6">
+                <input type="text" class="  form-control bg-black text-white" placeholder="Search By Name " id="byName">
+            </div>
+            <div class="letter-input col-md-6">
+                <input type="text" class="  form-control bg-black text-white" maxlength="1"
+                    placeholder="Search By First Letter " id="byLetter">
+            </div>
+        </div>
+    </div>
+    <!-- end search -->
+    <div id="main">
+        <div class="container  d-flex align-items-center justify-content-center">
+            <div class="row m-4 gy-4" id="data">
+            </div>
+        </div>
+    </div>
+    <!-- end main -->
+
+    <!-- loader -->
+    <div
+        class="outer-loader position-fixed bg-black top-0 bottom-0 start-0 end-0   justify-content-center align-items-center  ">
+        <div class="loader"></div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
