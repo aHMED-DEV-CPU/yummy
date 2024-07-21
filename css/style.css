@@ -126,7 +126,7 @@ margin: 0.5rem;
 }
 .outer-loader {
     display: flex;
-    z-index: 78;
+    z-index: 76;
     
 }
 /* end loader*/

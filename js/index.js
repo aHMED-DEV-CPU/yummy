@@ -5,13 +5,13 @@ $(document).ready(() => {
         $("body").css("overflow", "auto")
     });
 });
-async function showLoader() {
+function showLoader() {
     $(".outer-loader").fadeIn(() => {
         $("body").css("overflow", "hidden")
     });
 }
 
-async function hideLoader() {
+function hideLoader() {
     $(".outer-loader").fadeOut(() => {
         $("body").css("overflow", "auto")
     });
@@ -20,6 +20,8 @@ async function hideLoader() {
 // Start sidebar moving 
 $(".closing-opening").on("click", ".fa-sliders", (e) => {
     $(e.target).addClass("fa-xmark").removeClass("fa-sliders");
+    console.log();
+
     $(".sidebar").animate({ left: '0' }, 500);
     $("#links li").eq(0).animate({ top: '0' }, 500);
     $("#links li").eq(1).animate({ top: '0' }, 600)
@@ -29,14 +31,22 @@ $(".closing-opening").on("click", ".fa-sliders", (e) => {
 });
 $(".closing-opening").on("click", ".fa-xmark", (e) => {
     $(e.target).addClass("fa-sliders").removeClass("fa-xmark");
-    $(".sidebar").animate({ left: '-210px' }, 500);
+    $(".sidebar").animate({ left: "-" + $(".side-body").innerWidth() }, 500);
     $("#links li").eq(4).animate({ top: '200px' }, 500);
     $("#links li").eq(3).animate({ top: '200px' }, 600)
     $("#links li").eq(2).animate({ top: '200px' }, 700)
     $("#links li").eq(1).animate({ top: '200px' }, 800)
     $("#links li").eq(0).animate({ top: '200px' }, 900)
 });
-
+function closingSidebar() {
+    $(".fa-xmark").addClass("fa-sliders").removeClass("fa-xmark");
+    $(".sidebar").animate({ left: '-210px' }, 500);
+    $("#links li").eq(4).animate({ top: '200px' }, 500);
+    $("#links li").eq(3).animate({ top: '200px' }, 600)
+    $("#links li").eq(2).animate({ top: '200px' }, 700)
+    $("#links li").eq(1).animate({ top: '200px' }, 800)
+    $("#links li").eq(0).animate({ top: '200px' }, 900)
+}
 // End sidebar moving 
 // start first page
 let container = $("#data")
@@ -49,10 +59,10 @@ class search {
     }
     getData = async () => {
         try {
-            await showLoader()
+            showLoader()
             let response = await fetch(`https://www.themealdb.com/api/json/v1/1/${this.method}.php?${this.classifying}=${this.by}`)
             let result = await response.json()
-            await hideLoader()
+            hideLoader()
             return result.meals
         }
         catch {
@@ -64,11 +74,11 @@ class search {
 // first page container
 async function mainPage() {
     try {
-        await showLoader();
+        showLoader();
         let mainData = new search("search", "s", " ");
         let data = await mainData.getData();
         container.empty();
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < 20; i++) {
             container.append(`
                 <div class="col-sm-6 col-md-4 col-lg-3 rounded-2">
                     <div class="meal-box rounded-2 overflow-hidden" id="${data[i].idMeal}">
@@ -80,10 +90,10 @@ async function mainPage() {
                 </div>
             `);
         }
-        await hideLoader();
+        hideLoader();
     } catch (error) {
         console.log("Error fetching data:", error);
-        await hideLoader();
+        hideLoader();
     }
 }
 mainPage()
@@ -91,7 +101,7 @@ mainPage()
 // start   page details
 $("#data").on("click", ".meal-box", async (e) => {
     try {
-        await showLoader();
+        showLoader();
         let detailsData = new search("lookup", "i", $(e.currentTarget).attr("id"))
         let details = await detailsData.getData()
         container.empty()
@@ -155,10 +165,10 @@ $("#data").on("click", ".meal-box", async (e) => {
         </div>`
             container.append(html);
         }
-        await hideLoader();
+        hideLoader();
     } catch (error) {
         console.log("Error fetching details:", error);
-        await hideLoader();
+        hideLoader();
     }
 });
 $("#data").on("click", ".x-icon", async (e) => {
@@ -168,6 +178,7 @@ $("#data").on("click", ".x-icon", async (e) => {
 // End   page details
 // search 
 $("#Search").click(function (e) {
+    closingSidebar()
     showLoader()
     container.empty()
     $("#searchPage").removeClass("d-none")
@@ -177,7 +188,7 @@ $("#Search").click(function (e) {
 $("#byName").on("input", async (e) => {
     let entry = $("#byName").val().trim()
     try {
-        await showLoader()
+        showLoader()
         if (entry === "") {
             container.empty();
         }
@@ -201,10 +212,10 @@ $("#byName").on("input", async (e) => {
         } else {
             console.log("No meals found");
         }
-        await hideLoader()
+        hideLoader()
     }
     catch {
-        await hideLoader()
+        hideLoader()
         console.log("error");
         container.empty()
     }
@@ -217,7 +228,7 @@ $("#byName").on("input", async (e) => {
 $("#byLetter").on("input", async (e) => {
     let entry = $("#byLetter").val().trim()
     try {
-        await showLoader()
+        showLoader()
         if (entry === "") {
             container.empty();
         }
@@ -242,10 +253,10 @@ $("#byLetter").on("input", async (e) => {
         } else {
             console.log("No meals found");
         }
-        await hideLoader()
+        hideLoader()
     }
     catch {
-        await hideLoader()
+        hideLoader()
         console.log("error");
         container.empty()
     }
@@ -256,6 +267,7 @@ $("#byLetter").on("input", async (e) => {
 });
 // Categories
 $("#Categories").click(function (e) {
+    closingSidebar()
     showLoader()
     $("#searchPage").addClass("d-none")
     container.empty()
@@ -264,6 +276,7 @@ $("#Categories").click(function (e) {
             let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`)
             let result = await response.json()
             let allCat = result.categories
+            console.log(allCat.length);
             for (let i = 0; i < allCat.length; i++) {
                 container.append(`                <div class="  col-sm-6 col-md-4 col-lg-3 rounded-2 " >
                     <div class="category-box rounded-2 overflow-hidden" id="${allCat[i].strCategory}">
@@ -291,7 +304,7 @@ $("#main").on("click", ".category-box", async (e) => {
         let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${endPath}`)
         let result = await response.json()
         let meals = result.meals
-        for (let i = 0; i < meals.length; i++) {
+        for (let i = 0; i < 20; i++) {
             container.append(`                <div class="  col-sm-6 col-md-4 col-lg-3 rounded-2 " >
                     <div class="meal-box rounded-2 overflow-hidden" id="${meals[i].idMeal}">
                         <img src="${meals[i].strMealThumb}" alt="" class=" img-fluid">
@@ -308,6 +321,7 @@ $("#main").on("click", ".category-box", async (e) => {
 });
 // area 
 $("#Area").click(function (e) {
+    closingSidebar()
     showLoader()
     $("#searchPage").addClass("d-none")
     container.empty()
@@ -341,7 +355,7 @@ $("#main").on("click", ".area", async (e) => {
         let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${endPath}`)
         let result = await response.json()
         let meals = result.meals
-        for (let i = 0; i < meals.length; i++) {
+        for (let i = 0; i < 20; i++) {
             container.append(`                <div class="  col-sm-6 col-md-4 col-lg-3 rounded-2 " >
                     <div class="meal-box rounded-2 overflow-hidden" id="${meals[i].idMeal}">
                         <img src="${meals[i].strMealThumb}" alt="" class=" img-fluid">
@@ -359,6 +373,7 @@ $("#main").on("click", ".area", async (e) => {
 });
 // Ingredients
 $("#Ingredients").click(function (e) {
+    closingSidebar()
     showLoader()
     $("#searchPage").addClass("d-none")
     container.empty()
@@ -367,7 +382,7 @@ $("#Ingredients").click(function (e) {
             let response = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`)
             let result = await response.json()
             let allIngredients = result.meals
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 20; i++) {
                 container.append(`                <div class="  col-sm-6 col-md-4 col-lg-3 rounded-2 " >
                     <div class="ingredients text-center cursor-pointer" id="${allIngredients[i].strIngredient}">
                         <i class="fa-solid fa-drumstick-bite text-white"></i>
@@ -418,6 +433,7 @@ let isAgeValid = false;
 let isPasswordValid = false;
 let isRePasswordValid = false;
 $("#Contact").click(function (e) {
+    closingSidebar()
     showLoader()
     $("#searchPage").addClass("d-none")
     container.empty()
